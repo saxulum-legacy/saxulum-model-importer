@@ -3,6 +3,7 @@
 namespace Saxulum\ModelImporter;
 
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class Importer
 {
@@ -20,6 +21,18 @@ class Importer
      * @var LoggerInterface
      */
     protected $logger;
+
+    /**
+     * @param ReaderInterface $reader
+     * @param WriterInterface $writer
+     * @param LoggerInterface $logger
+     */
+    public function __construct(ReaderInterface $reader, WriterInterface $writer, LoggerInterface $logger = null)
+    {
+        $this->reader = $reader;
+        $this->writer = $writer;
+        $this->logger = null !== $logger ? $logger : new NullLogger();
+    }
 
     /**
      * @param int $limit
