@@ -1,0 +1,22 @@
+{
+    "name": "saxulum/saxulum-model-importer",
+    "description": "Saxulum Model Importer",
+    "keywords": ["saxulum", "model", "importer"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dominik Zogg",
+            "email": "dominik.zogg@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "~5.5|~7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "suggests": {},
+    "autoload": {
+        "psr-4": { "Saxulum\\ModelImporter\\": "src/" }
+    }
+}
