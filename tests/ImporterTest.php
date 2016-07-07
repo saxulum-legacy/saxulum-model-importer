@@ -428,8 +428,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 if (isset($data[$readerModel->getIdentifier()])) {
                     return $data[$readerModel->getIdentifier()];
                 }
-
-                return;
             });
 
         $writer
