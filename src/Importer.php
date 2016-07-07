@@ -36,6 +36,7 @@ class Importer
 
     /**
      * @param int $limit
+     * @return \DateTime
      */
     public function import($limit = 100)
     {
@@ -84,5 +85,7 @@ class Importer
 
         $this->writer->removeAllOutdated($importDate);
         $this->logger->info('Removed all outdates');
+
+        return $importDate;
     }
 }
