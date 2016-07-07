@@ -42,7 +42,7 @@ class Importer
     {
         $importDate = new \DateTime();
 
-        $this->logger->info('Import started at {importDate}', ['importData' => $importDate]);
+        $this->logger->info('Import started at {importDate}', ['importDate' => $importDate]);
 
         $offset = 0;
 
