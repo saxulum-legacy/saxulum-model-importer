@@ -36,6 +36,7 @@ class Importer
 
     /**
      * @param int $limit
+     *
      * @return \DateTime
      */
     public function import($limit = 100)
@@ -48,7 +49,6 @@ class Importer
 
         while ([] !== $readerModels = $this->reader->getModels($offset, $limit)) {
             $this->logger->info('Read, offset: {offset}, limit: {limit}', ['offset' => $offset, 'limit' => $limit]);
-            $writerModels = [];
             foreach ($readerModels as $readerModel) {
                 $writerModel = $this->writer->find($readerModel);
                 if (null === $writerModel) {
@@ -73,11 +73,9 @@ class Importer
                     'Persisted model with reader identifier {readerIdentifier}',
                     ['readerIdentifier' => $readerModel->getIdentifier()]
                 );
-
-                $writerModels[] = $writerModel;
             }
 
-            $this->writer->flush($writerModels);
+            $this->writer->flush();
             $this->logger->info('Flushed models');
 
             $offset += $limit;

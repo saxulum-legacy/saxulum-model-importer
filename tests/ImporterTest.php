@@ -419,6 +419,8 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['find', 'create', 'update', 'persist', 'flush', 'removeAllOutdated'])
             ->getMockForAbstractClass();
 
+        $persistCache = [];
+
         $writer
             ->expects(self::any())
             ->method('find')
@@ -450,17 +452,19 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         $writer
             ->expects(self::any())
             ->method('persist')
-            ->willReturnCallback(function (WriterModelInterface $writerModel) {
-
+            ->willReturnCallback(function (WriterModelInterface $writerModel) use (&$persistCache) {
+                $persistCache[] = $writerModel;
             });
 
         $writer
             ->expects(self::any())
             ->method('flush')
-            ->willReturnCallback(function (array $writerModels) use (&$data) {
-                foreach ($writerModels as $writerModel) {
+            ->willReturnCallback(function () use (&$data, &$persistCache) {
+                foreach ($persistCache as $writerModel) {
                     $data[$writerModel->getReaderIdentifier()] = $writerModel;
                 }
+
+                $persistCache = [];
             });
 
         $writer

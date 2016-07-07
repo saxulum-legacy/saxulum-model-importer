@@ -29,10 +29,7 @@ interface WriterInterface
      */
     public function persist(WriterModelInterface $model);
 
-    /**
-     * @param WriterModelInterface[]|array $models
-     */
-    public function flush(array $models);
+    public function flush();
 
     /**
      * @param \DateTime $lastImportDate
