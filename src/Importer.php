@@ -49,13 +49,7 @@ class Importer
 
         while ([] !== $readerModels = $this->reader->getModels($offset, $limit)) {
             $this->logger->info('Read, offset: {offset}, limit: {limit}', ['offset' => $offset, 'limit' => $limit]);
-            foreach ($readerModels as $readerModel) {
-                $this->importModel($readerModel, $importDate);
-            }
-
-            $this->writer->flush();
-            $this->logger->info('Flushed models');
-
+            $this->importModels($readerModels, $importDate);
             $offset += $limit;
         }
 
@@ -63,6 +57,20 @@ class Importer
         $this->logger->info('Removed all outdates');
 
         return $importDate;
+    }
+
+    /**
+     * @param ReaderModelInterface[]|array $readerModels
+     * @param \DateTime                    $importDate
+     */
+    protected function importModels(array $readerModels, \DateTime $importDate)
+    {
+        foreach ($readerModels as $readerModel) {
+            $this->importModel($readerModel, $importDate);
+        }
+
+        $this->writer->flush();
+        $this->logger->info('Flushed models');
     }
 
     /**
