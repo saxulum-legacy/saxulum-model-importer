@@ -50,29 +50,7 @@ class Importer
         while ([] !== $readerModels = $this->reader->getModels($offset, $limit)) {
             $this->logger->info('Read, offset: {offset}, limit: {limit}', ['offset' => $offset, 'limit' => $limit]);
             foreach ($readerModels as $readerModel) {
-                $writerModel = $this->writer->find($readerModel);
-                if (null === $writerModel) {
-                    $writerModel = $this->writer->create($readerModel);
-                    $this->logger->info(
-                        'Created new model with reader identifier {readerIdentifier}',
-                        ['readerIdentifier' => $readerModel->getIdentifier()]
-                    );
-                } else {
-                    $this->writer->update($writerModel, $readerModel);
-                    $this->logger->info(
-                        'Updated model with reader identifier {readerIdentifier}',
-                        ['readerIdentifier' => $readerModel->getIdentifier()]
-                    );
-                }
-
-                $writerModel->setReaderIdentifier($readerModel->getIdentifier());
-                $writerModel->setLastImportDate($importDate);
-
-                $this->writer->persist($writerModel);
-                $this->logger->info(
-                    'Persisted model with reader identifier {readerIdentifier}',
-                    ['readerIdentifier' => $readerModel->getIdentifier()]
-                );
+                $this->importModel($readerModel, $importDate);
             }
 
             $this->writer->flush();
@@ -85,5 +63,36 @@ class Importer
         $this->logger->info('Removed all outdates');
 
         return $importDate;
+    }
+
+    /**
+     * @param ReaderModelInterface $readerModel
+     * @param \DateTime            $importDate
+     */
+    protected function importModel(ReaderModelInterface $readerModel, \DateTime $importDate)
+    {
+        $writerModel = $this->writer->find($readerModel);
+        if (null === $writerModel) {
+            $writerModel = $this->writer->create($readerModel);
+            $this->logger->info(
+                'Created new model with reader identifier {readerIdentifier}',
+                ['readerIdentifier' => $readerModel->getIdentifier()]
+            );
+        } else {
+            $this->writer->update($writerModel, $readerModel);
+            $this->logger->info(
+                'Updated model with reader identifier {readerIdentifier}',
+                ['readerIdentifier' => $readerModel->getIdentifier()]
+            );
+        }
+
+        $writerModel->setReaderIdentifier($readerModel->getIdentifier());
+        $writerModel->setLastImportDate($importDate);
+
+        $this->writer->persist($writerModel);
+        $this->logger->info(
+            'Persisted model with reader identifier {readerIdentifier}',
+            ['readerIdentifier' => $readerModel->getIdentifier()]
+        );
     }
 }
