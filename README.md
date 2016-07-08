@@ -1,9 +1,9 @@
 # saxulum-model-importer
 
-[![Build Status](https://api.travis-ci.org/saxulum/saxulum-model-importer.png?branch=v1)](https://travis-ci.org/saxulum/saxulum-model-importer)
+[![Build Status](https://api.travis-ci.org/saxulum/saxulum-model-importer.png?branch=master)](https://travis-ci.org/saxulum/saxulum-model-importer)
 [![Total Downloads](https://poser.pugx.org/saxulum/saxulum-model-importer/downloads.png)](https://packagist.org/packages/saxulum/saxulum-model-importer)
 [![Latest Stable Version](https://poser.pugx.org/saxulum/saxulum-model-importer/v/stable.png)](https://packagist.org/packages/saxulum/saxulum-model-importer)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/saxulum/saxulum-model-importer/badges/quality-score.png?b=v1)](https://scrutinizer-ci.com/g/saxulum/saxulum-model-importer/?branch=v1)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/saxulum/saxulum-model-importer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/saxulum/saxulum-model-importer/?branch=master)
 
 ## Features
 
