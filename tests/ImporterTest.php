@@ -105,7 +105,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created new model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with reader identifier {readerIdentifier}',
                     'context' => [
                         'readerIdentifier' => 'id1',
                     ],
@@ -119,7 +119,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created new model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with reader identifier {readerIdentifier}',
                     'context' => [
                         'readerIdentifier' => 'id2',
                     ],
@@ -146,7 +146,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created new model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with reader identifier {readerIdentifier}',
                     'context' => [
                         'readerIdentifier' => 'id3',
                     ],
@@ -160,7 +160,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created new model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with reader identifier {readerIdentifier}',
                     'context' => [
                         'readerIdentifier' => 'id4',
                     ],
@@ -187,7 +187,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created new model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with reader identifier {readerIdentifier}',
                     'context' => [
                         'readerIdentifier' => 'id5',
                     ],
@@ -317,7 +317,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created new model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with reader identifier {readerIdentifier}',
                     'context' => [
                         'readerIdentifier' => 'id3',
                     ],
@@ -331,7 +331,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created new model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with reader identifier {readerIdentifier}',
                     'context' => [
                         'readerIdentifier' => 'id4',
                     ],

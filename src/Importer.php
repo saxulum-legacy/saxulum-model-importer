@@ -74,24 +74,27 @@ class Importer
         $writerModel = $this->writer->find($readerModel);
         if (null === $writerModel) {
             $writerModel = $this->writer->create($readerModel);
-            $this->logger->info(
-                'Created new model with reader identifier {readerIdentifier}',
-                ['readerIdentifier' => $readerModel->getIdentifier()]
-            );
+            $this->modelInfo($readerModel, 'created');
         } else {
             $this->writer->update($writerModel, $readerModel);
-            $this->logger->info(
-                'Updated model with reader identifier {readerIdentifier}',
-                ['readerIdentifier' => $readerModel->getIdentifier()]
-            );
+            $this->modelInfo($readerModel, 'updated');
         }
 
         $writerModel->setReaderIdentifier($readerModel->getIdentifier());
         $writerModel->setLastImportDate($importDate);
 
         $this->writer->persist($writerModel);
+        $this->modelInfo($readerModel, 'persisted');
+    }
+
+    /**
+     * @param ReaderModelInterface $readerModel
+     * @param string               $action
+     */
+    protected function modelInfo(ReaderModelInterface $readerModel, $action)
+    {
         $this->logger->info(
-            'Persisted model with reader identifier {readerIdentifier}',
+            ucfirst($action).' model with reader identifier {readerIdentifier}',
             ['readerIdentifier' => $readerModel->getIdentifier()]
         );
     }
