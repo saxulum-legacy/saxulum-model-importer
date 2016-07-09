@@ -4,6 +4,7 @@ namespace Saxulum\Tests\ModelImporter;
 
 use Psr\Log\AbstractLogger;
 use Saxulum\ModelImporter\Importer;
+use Saxulum\ModelImporter\NotImportableException;
 use Saxulum\ModelImporter\ReaderInterface;
 use Saxulum\ModelImporter\ReaderModelInterface;
 use Saxulum\ModelImporter\WriterInterface;
@@ -74,11 +75,11 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(WriterModelInterface::class, $writerData['id4']);
         self::assertInstanceOf(WriterModelInterface::class, $writerData['id5']);
 
-        self::assertSame('id1', $writerData['id1']->getReaderIdentifier());
-        self::assertSame('id2', $writerData['id2']->getReaderIdentifier());
-        self::assertSame('id3', $writerData['id3']->getReaderIdentifier());
-        self::assertSame('id4', $writerData['id4']->getReaderIdentifier());
-        self::assertSame('id5', $writerData['id5']->getReaderIdentifier());
+        self::assertSame('id1', $writerData['id1']->getImportIdentifier());
+        self::assertSame('id2', $writerData['id2']->getImportIdentifier());
+        self::assertSame('id3', $writerData['id3']->getImportIdentifier());
+        self::assertSame('id4', $writerData['id4']->getImportIdentifier());
+        self::assertSame('id5', $writerData['id5']->getImportIdentifier());
 
         self::assertSame($importDate, $writerData['id1']->getLastImportDate());
         self::assertSame($importDate, $writerData['id2']->getLastImportDate());
@@ -105,30 +106,30 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id1',
+                        'identifier' => 'id1',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id1',
+                        'identifier' => 'id1',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id2',
+                        'identifier' => 'id2',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id2',
+                        'identifier' => 'id2',
                     ],
                 ],
                 [
@@ -146,30 +147,30 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id3',
+                        'identifier' => 'id3',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id3',
+                        'identifier' => 'id3',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id4',
+                        'identifier' => 'id4',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id4',
+                        'identifier' => 'id4',
                     ],
                 ],
                 [
@@ -187,16 +188,16 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id5',
+                        'identifier' => 'id5',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id5',
+                        'identifier' => 'id5',
                     ],
                 ],
                 [
@@ -247,10 +248,10 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(WriterModelInterface::class, $writerData['id3']);
         self::assertInstanceOf(WriterModelInterface::class, $writerData['id4']);
 
-        self::assertSame('id1', $writerData['id1']->getReaderIdentifier());
-        self::assertSame('id2', $writerData['id2']->getReaderIdentifier());
-        self::assertSame('id3', $writerData['id3']->getReaderIdentifier());
-        self::assertSame('id4', $writerData['id4']->getReaderIdentifier());
+        self::assertSame('id1', $writerData['id1']->getImportIdentifier());
+        self::assertSame('id2', $writerData['id2']->getImportIdentifier());
+        self::assertSame('id3', $writerData['id3']->getImportIdentifier());
+        self::assertSame('id4', $writerData['id4']->getImportIdentifier());
 
         self::assertSame($importDate, $writerData['id1']->getLastImportDate());
         self::assertSame($importDate, $writerData['id2']->getLastImportDate());
@@ -276,30 +277,30 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Updated model with reader identifier {readerIdentifier}',
+                    'message' => 'Updated model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id1',
+                        'identifier' => 'id1',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id1',
+                        'identifier' => 'id1',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Updated model with reader identifier {readerIdentifier}',
+                    'message' => 'Updated model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id2',
+                        'identifier' => 'id2',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id2',
+                        'identifier' => 'id2',
                     ],
                 ],
                 [
@@ -317,30 +318,30 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id3',
+                        'identifier' => 'id3',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id3',
+                        'identifier' => 'id3',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Created model with reader identifier {readerIdentifier}',
+                    'message' => 'Created model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id4',
+                        'identifier' => 'id4',
                     ],
                 ],
                 [
                     'level' => 'info',
-                    'message' => 'Persisted model with reader identifier {readerIdentifier}',
+                    'message' => 'Persisted model with identifier {identifier}',
                     'context' => [
-                        'readerIdentifier' => 'id4',
+                        'identifier' => 'id4',
                     ],
                 ],
                 [
@@ -352,6 +353,160 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                     'level' => 'info',
                     'message' => 'Removed all outdates',
                     'context' => [],
+                ],
+            ],
+            $logger->getLogs()
+        );
+    }
+
+    public function testWithNotImportableDataOnReaderSide()
+    {
+        $readerData = [
+            $this->getReaderModel('id1'),
+            $this->getReaderModel('id2'),
+            $this->getReaderModel('id3'),
+            $this->getReaderModel('id4'),
+            $this->getReaderModel('id5'),
+        ];
+
+        $lastImportDate = new \DateTime('yesterday');
+
+        $writerData = [
+            'id2' => $this->getWriterModel('id2', $lastImportDate),
+        ];
+
+        $reader = $this->getReader($readerData);
+        $writer = $this->getWriter($writerData, ['id1'], ['id2'], ['id3']);
+        $logger = new TestLogger();
+
+        $importer = new Importer($reader, $writer, $logger);
+
+        $importDate = $importer->import(2);
+
+        self::assertInstanceOf(\DateTime::class, $importDate);
+
+        self::assertCount(2, $writerData);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData['id4']);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData['id5']);
+
+        self::assertSame('id4', $writerData['id4']->getImportIdentifier());
+        self::assertSame('id5', $writerData['id5']->getImportIdentifier());
+
+        self::assertSame($importDate, $writerData['id4']->getLastImportDate());
+        self::assertSame($importDate, $writerData['id5']->getLastImportDate());
+
+        self::assertSame(
+            [
+                [
+                    'level' => 'info',
+                    'message' => 'Import started at {importDate}',
+                    'context' => [
+                        'importDate' => $importDate,
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Read, offset: {offset}, limit: {limit}',
+                    'context' => [
+                        'offset' => 0,
+                        'limit' => 2,
+                    ],
+                ],
+                [
+                    'level' => 'warning',
+                    'message' => 'Model with identifier {identifier} is not importable, cause create failed',
+                    'context' => [
+                        'identifier' => 'id1',
+                    ],
+                ],
+                [
+                    'level' => 'warning',
+                    'message' => 'Model with identifier {identifier} is not importable, cause update failed',
+                    'context' => [
+                        'identifier' => 'id2',
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Flushed models',
+                    'context' => [
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Read, offset: {offset}, limit: {limit}',
+                    'context' => [
+                        'offset' => 2,
+                        'limit' => 2,
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Created model with identifier {identifier}',
+                    'context' => [
+                        'identifier' => 'id3',
+                    ],
+                ],
+                [
+                    'level' => 'warning',
+                    'message' => 'Model with identifier {identifier} is not importable, cause persist failed',
+                    'context' => [
+                        'identifier' => 'id3',
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Created model with identifier {identifier}',
+                    'context' => [
+                        'identifier' => 'id4',
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Persisted model with identifier {identifier}',
+                    'context' => [
+                        'identifier' => 'id4',
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Flushed models',
+                    'context' => [
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Read, offset: {offset}, limit: {limit}',
+                    'context' => [
+                        'offset' => 4,
+                        'limit' => 2,
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Created model with identifier {identifier}',
+                    'context' => [
+                        'identifier' => 'id5',
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Persisted model with identifier {identifier}',
+                    'context' => [
+                        'identifier' => 'id5',
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Flushed models',
+                    'context' => [
+                    ],
+                ],
+                [
+                    'level' => 'info',
+                    'message' => 'Removed all outdates',
+                    'context' => [
+                    ],
                 ],
             ],
             $logger->getLogs()
@@ -391,14 +546,14 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         /** @var ReaderModelInterface|\PHPUnit_Framework_MockObject_MockObject|\stdClass $readerModel */
         $readerModel = $this
             ->getMockBuilder(ReaderModelInterface::class)
-            ->setMethods(['getIdentifier', 'getReaderIdentifier'])
+            ->setMethods(['getImportIdentifier'])
             ->getMockForAbstractClass();
 
         $readerModel->identifier = $identifier;
 
         $readerModel
             ->expects(self::any())
-            ->method('getIdentifier')
+            ->method('getImportIdentifier')
             ->willReturnCallback(function () use ($readerModel) {
                 return $readerModel->identifier;
             });
@@ -408,11 +563,18 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param WriterModelInterface[]|array $data
+     * @param string[]|array               $notCreatable
+     * @param string[]|array               $notUpdateable
+     * @param string[]|array               $notPersistable
      *
      * @return \PHPUnit_Framework_MockObject_MockObject|WriterInterface
      */
-    protected function getWriter(array &$data)
-    {
+    protected function getWriter(
+        array &$data,
+        array $notCreatable = [],
+        array $notUpdateable = [],
+        array $notPersistable = []
+    ) {
         /** @var WriterInterface|\PHPUnit_Framework_MockObject_MockObject $writer */
         $writer = $this
             ->getMockBuilder(WriterInterface::class)
@@ -425,17 +587,21 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->expects(self::any())
             ->method('find')
             ->willReturnCallback(function (ReaderModelInterface $readerModel) use ($data) {
-                if (isset($data[$readerModel->getIdentifier()])) {
-                    return $data[$readerModel->getIdentifier()];
+                if (isset($data[$readerModel->getImportIdentifier()])) {
+                    return $data[$readerModel->getImportIdentifier()];
                 }
             });
 
         $writer
             ->expects(self::any())
             ->method('create')
-            ->willReturnCallback(function (ReaderModelInterface $readerModel) {
+            ->willReturnCallback(function (ReaderModelInterface $readerModel) use ($notCreatable) {
+                if (in_array($readerModel->getImportIdentifier(), $notCreatable, true)) {
+                    throw new NotImportableException('create');
+                }
+
                 $writerModel = $this->getWriterModel();
-                $writerModel->setReaderIdentifier($readerModel->getIdentifier());
+                $writerModel->setImportIdentifier($readerModel->getImportIdentifier());
 
                 return $writerModel;
             });
@@ -443,14 +609,24 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         $writer
             ->expects(self::any())
             ->method('update')
-            ->willReturnCallback(function (WriterModelInterface $writerModel, ReaderModelInterface $readerModel) {
-                return $writerModel;
-            });
+            ->willReturnCallback(
+                function (WriterModelInterface $writerModel, ReaderModelInterface $readerModel) use ($notUpdateable) {
+                    if (in_array($readerModel->getImportIdentifier(), $notUpdateable, true)) {
+                        throw new NotImportableException('update');
+                    }
+
+                    return $writerModel;
+                }
+            );
 
         $writer
             ->expects(self::any())
             ->method('persist')
-            ->willReturnCallback(function (WriterModelInterface $writerModel) use (&$persistCache) {
+            ->willReturnCallback(function (WriterModelInterface $writerModel) use (&$persistCache, $notPersistable) {
+                if (in_array($writerModel->getImportIdentifier(), $notPersistable, true)) {
+                    throw new NotImportableException('persist');
+                }
+
                 $persistCache[] = $writerModel;
             });
 
@@ -459,7 +635,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->method('flush')
             ->willReturnCallback(function () use (&$data, &$persistCache) {
                 foreach ($persistCache as $writerModel) {
-                    $data[$writerModel->getReaderIdentifier()] = $writerModel;
+                    $data[$writerModel->getImportIdentifier()] = $writerModel;
                 }
 
                 $persistCache = [];
@@ -469,9 +645,9 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->expects(self::any())
             ->method('removeAllOutdated')
             ->willReturnCallback(function (\DateTime $lastImportDate) use (&$data) {
-                foreach ($data as $readerIdentifier => $writerModel) {
+                foreach ($data as $identifier => $writerModel) {
                     if ($writerModel->getLastImportDate()->format('YmdHis') !== $lastImportDate->format('YmdHis')) {
-                        unset($data[$readerIdentifier]);
+                        unset($data[$identifier]);
                     }
                 }
             });
@@ -480,35 +656,35 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string|null    $readerIdentifier
+     * @param string|null    $identifier
      * @param \DateTime|null $lastImportDate
      *
      * @return \PHPUnit_Framework_MockObject_MockObject|WriterModelInterface|\stdClass
      */
-    protected function getWriterModel($readerIdentifier = null, \DateTime $lastImportDate = null)
+    protected function getWriterModel($identifier = null, \DateTime $lastImportDate = null)
     {
         /** @var WriterModelInterface|\PHPUnit_Framework_MockObject_MockObject|\stdClass $writerModel */
         $writerModel = $this
             ->getMockBuilder(WriterModelInterface::class)
-            ->setMethods(['setReaderIdentifier', 'getReaderIdentifier', 'setLastImportDate', 'getLastImportDate'])
+            ->setMethods(['setImportIdentifier', 'getImportIdentifier', 'setLastImportDate', 'getLastImportDate'])
             ->getMockForAbstractClass();
 
-        $writerModel->readerIdentifier = $readerIdentifier;
+        $writerModel->identifier = $identifier;
         $writerModel->lastImportDate = $lastImportDate;
 
         $writerModel
             ->expects(self::any())
-            ->method('setReaderIdentifier')
-            ->willReturnCallback(function ($readerIdentifier) use ($writerModel) {
-                $writerModel->readerIdentifier = $readerIdentifier;
+            ->method('setImportIdentifier')
+            ->willReturnCallback(function ($identifier) use ($writerModel) {
+                $writerModel->identifier = $identifier;
 
             });
 
         $writerModel
             ->expects(self::any())
-            ->method('getReaderIdentifier')
+            ->method('getImportIdentifier')
             ->willReturnCallback(function () use ($writerModel) {
-                return $writerModel->readerIdentifier;
+                return $writerModel->identifier;
             });
 
         $writerModel

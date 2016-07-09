@@ -66,7 +66,14 @@ class Importer
     protected function importModels(array $readerModels, \DateTime $importDate)
     {
         foreach ($readerModels as $readerModel) {
-            $this->importModel($readerModel, $importDate);
+            try {
+                $this->importModel($readerModel, $importDate);
+            } catch (NotImportableException $e) {
+                $this->logger->warning(
+                    $e->getMessage(),
+                    ['identifier' => $readerModel->getImportIdentifier()]
+                );
+            }
         }
 
         $this->writer->flush();
@@ -88,7 +95,7 @@ class Importer
             $this->modelInfo($readerModel, 'updated');
         }
 
-        $writerModel->setReaderIdentifier($readerModel->getIdentifier());
+        $writerModel->setImportIdentifier($readerModel->getImportIdentifier());
         $writerModel->setLastImportDate($importDate);
 
         $this->writer->persist($writerModel);
@@ -102,8 +109,8 @@ class Importer
     protected function modelInfo(ReaderModelInterface $readerModel, $action)
     {
         $this->logger->info(
-            ucfirst($action).' model with reader identifier {readerIdentifier}',
-            ['readerIdentifier' => $readerModel->getIdentifier()]
+            ucfirst($action).' model with identifier {identifier}',
+            ['identifier' => $readerModel->getImportIdentifier()]
         );
     }
 }

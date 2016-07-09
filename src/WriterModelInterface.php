@@ -5,14 +5,14 @@ namespace Saxulum\ModelImporter;
 interface WriterModelInterface
 {
     /**
-     * @param string|int $readerIdentifier
+     * @param string|int $identifier
      */
-    public function setReaderIdentifier($readerIdentifier);
+    public function setImportIdentifier($identifier);
 
     /**
      * @return string|int
      */
-    public function getReaderIdentifier();
+    public function getImportIdentifier();
 
     /**
      * @param \DateTime $lastImportDate

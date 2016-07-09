@@ -7,5 +7,5 @@ interface ReaderModelInterface
     /**
      * @return string|int
      */
-    public function getIdentifier();
+    public function getImportIdentifier();
 }

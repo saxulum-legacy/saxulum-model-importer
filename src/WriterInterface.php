@@ -15,17 +15,23 @@ interface WriterInterface
      * @param ReaderModelInterface $readerModel
      *
      * @return WriterModelInterface
+     *
+     * @throws NotImportableException
      */
     public function create(ReaderModelInterface $readerModel);
 
     /**
      * @param WriterModelInterface $model
      * @param ReaderModelInterface $readerModel
+     *
+     * @throws NotImportableException
      */
     public function update(WriterModelInterface $model, ReaderModelInterface $readerModel);
 
     /**
      * @param WriterModelInterface $model
+     *
+     * @throws NotImportableException
      */
     public function persist(WriterModelInterface $model);
 
