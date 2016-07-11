@@ -5,7 +5,9 @@
 [![Latest Stable Version](https://poser.pugx.org/saxulum/saxulum-model-importer/v/stable.png)](https://packagist.org/packages/saxulum/saxulum-model-importer)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/saxulum/saxulum-model-importer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/saxulum/saxulum-model-importer/?branch=master)
 
-## Features
+## Description
+
+A simple to use model importer, as a user you do not need to check if a create or update is needed, to loop...
 
 ## Requirements
 
