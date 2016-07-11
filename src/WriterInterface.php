@@ -21,19 +21,19 @@ interface WriterInterface
     public function create(ReaderModelInterface $readerModel);
 
     /**
-     * @param WriterModelInterface $model
+     * @param WriterModelInterface $writerModel
      * @param ReaderModelInterface $readerModel
      *
      * @throws NotImportableException
      */
-    public function update(WriterModelInterface $model, ReaderModelInterface $readerModel);
+    public function update(WriterModelInterface $writerModel, ReaderModelInterface $readerModel);
 
     /**
-     * @param WriterModelInterface $model
+     * @param WriterModelInterface $writerModel
      *
      * @throws NotImportableException
      */
-    public function persist(WriterModelInterface $model);
+    public function persist(WriterModelInterface $writerModel);
 
     public function flush();
 
