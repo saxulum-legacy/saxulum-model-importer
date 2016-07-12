@@ -19,5 +19,10 @@
     "suggests": {},
     "autoload": {
         "psr-4": { "Saxulum\\ModelImporter\\": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
     }
 }
