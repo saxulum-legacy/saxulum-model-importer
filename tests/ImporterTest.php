@@ -69,23 +69,23 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(\DateTime::class, $importDate);
 
         self::assertCount(5, $writerData);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id1']);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id2']);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id3']);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id4']);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id5']);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[0]);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[1]);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[2]);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[3]);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[4]);
 
-        self::assertSame('id1', $writerData['id1']->getImportIdentifier());
-        self::assertSame('id2', $writerData['id2']->getImportIdentifier());
-        self::assertSame('id3', $writerData['id3']->getImportIdentifier());
-        self::assertSame('id4', $writerData['id4']->getImportIdentifier());
-        self::assertSame('id5', $writerData['id5']->getImportIdentifier());
+        self::assertSame('id1', $writerData[0]->getImportIdentifier());
+        self::assertSame('id2', $writerData[1]->getImportIdentifier());
+        self::assertSame('id3', $writerData[2]->getImportIdentifier());
+        self::assertSame('id4', $writerData[3]->getImportIdentifier());
+        self::assertSame('id5', $writerData[4]->getImportIdentifier());
 
-        self::assertSame($importDate, $writerData['id1']->getLastImportDate());
-        self::assertSame($importDate, $writerData['id2']->getLastImportDate());
-        self::assertSame($importDate, $writerData['id3']->getLastImportDate());
-        self::assertSame($importDate, $writerData['id4']->getLastImportDate());
-        self::assertSame($importDate, $writerData['id5']->getLastImportDate());
+        self::assertSame($importDate, $writerData[0]->getLastImportDate());
+        self::assertSame($importDate, $writerData[1]->getLastImportDate());
+        self::assertSame($importDate, $writerData[2]->getLastImportDate());
+        self::assertSame($importDate, $writerData[3]->getLastImportDate());
+        self::assertSame($importDate, $writerData[4]->getLastImportDate());
 
         self::assertSame(
             [
@@ -227,9 +227,9 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         $lastImportDate = new \DateTime('yesterday');
 
         $writerData = [
-            'id1' => $this->getWriterModel('id1', $lastImportDate),
-            'id2' => $this->getWriterModel('id2', $lastImportDate),
-            'id5' => $this->getWriterModel('id5', $lastImportDate),
+            $this->getWriterModel('id1', $lastImportDate),
+            $this->getWriterModel('id2', $lastImportDate),
+            $this->getWriterModel('id5', $lastImportDate),
         ];
 
         $reader = $this->getReader($readerData);
@@ -243,20 +243,20 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(\DateTime::class, $importDate);
 
         self::assertCount(4, $writerData);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id1']);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id2']);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id3']);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id4']);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[0]);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[1]);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[2]);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[3]);
 
-        self::assertSame('id1', $writerData['id1']->getImportIdentifier());
-        self::assertSame('id2', $writerData['id2']->getImportIdentifier());
-        self::assertSame('id3', $writerData['id3']->getImportIdentifier());
-        self::assertSame('id4', $writerData['id4']->getImportIdentifier());
+        self::assertSame('id1', $writerData[0]->getImportIdentifier());
+        self::assertSame('id2', $writerData[1]->getImportIdentifier());
+        self::assertSame('id3', $writerData[2]->getImportIdentifier());
+        self::assertSame('id4', $writerData[3]->getImportIdentifier());
 
-        self::assertSame($importDate, $writerData['id1']->getLastImportDate());
-        self::assertSame($importDate, $writerData['id2']->getLastImportDate());
-        self::assertSame($importDate, $writerData['id3']->getLastImportDate());
-        self::assertSame($importDate, $writerData['id4']->getLastImportDate());
+        self::assertSame($importDate, $writerData[0]->getLastImportDate());
+        self::assertSame($importDate, $writerData[1]->getLastImportDate());
+        self::assertSame($importDate, $writerData[2]->getLastImportDate());
+        self::assertSame($importDate, $writerData[3]->getLastImportDate());
 
         self::assertSame(
             [
@@ -372,7 +372,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         $lastImportDate = new \DateTime('yesterday');
 
         $writerData = [
-            'id2' => $this->getWriterModel('id2', $lastImportDate),
+            $this->getWriterModel('id2', $lastImportDate),
         ];
 
         $reader = $this->getReader($readerData);
@@ -386,14 +386,14 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(\DateTime::class, $importDate);
 
         self::assertCount(2, $writerData);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id4']);
-        self::assertInstanceOf(WriterModelInterface::class, $writerData['id5']);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[0]);
+        self::assertInstanceOf(WriterModelInterface::class, $writerData[1]);
 
-        self::assertSame('id4', $writerData['id4']->getImportIdentifier());
-        self::assertSame('id5', $writerData['id5']->getImportIdentifier());
+        self::assertSame('id4', $writerData[0]->getImportIdentifier());
+        self::assertSame('id5', $writerData[1]->getImportIdentifier());
 
-        self::assertSame($importDate, $writerData['id4']->getLastImportDate());
-        self::assertSame($importDate, $writerData['id5']->getLastImportDate());
+        self::assertSame($importDate, $writerData[0]->getLastImportDate());
+        self::assertSame($importDate, $writerData[1]->getLastImportDate());
 
         self::assertSame(
             [
@@ -587,8 +587,10 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->expects(self::any())
             ->method('find')
             ->willReturnCallback(function (ReaderModelInterface $readerModel) use ($data) {
-                if (isset($data[$readerModel->getImportIdentifier()])) {
-                    return $data[$readerModel->getImportIdentifier()];
+                foreach ($data as $writerModel) {
+                    if ($writerModel->getImportIdentifier() === $readerModel->getImportIdentifier()) {
+                        return $writerModel;
+                    }
                 }
             });
 
@@ -635,7 +637,9 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->method('flush')
             ->willReturnCallback(function () use (&$data, &$persistCache) {
                 foreach ($persistCache as $writerModel) {
-                    $data[$writerModel->getImportIdentifier()] = $writerModel;
+                    if (!in_array($writerModel, $data, true)) {
+                        $data[] = $writerModel;
+                    }
                 }
 
                 $persistCache = [];
@@ -645,9 +649,9 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->expects(self::any())
             ->method('removeAllOutdated')
             ->willReturnCallback(function (\DateTime $lastImportDate) use (&$data) {
-                foreach ($data as $identifier => $writerModel) {
+                foreach ($data as $i => $writerModel) {
                     if ($writerModel->getLastImportDate()->format('YmdHis') !== $lastImportDate->format('YmdHis')) {
-                        unset($data[$identifier]);
+                        array_splice($data, $i, 1);
                     }
                 }
             });
