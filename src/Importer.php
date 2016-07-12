@@ -50,6 +50,7 @@ class Importer
         while ([] !== $readerModels = $this->reader->getModels($offset, $limit)) {
             $this->logger->info('Read, offset: {offset}, limit: {limit}', ['offset' => $offset, 'limit' => $limit]);
             $this->importModels($readerModels, $importDate);
+            $this->reader->clear();
             $offset += $limit;
         }
 
@@ -77,6 +78,8 @@ class Importer
         }
 
         $this->writer->flush();
+        $this->writer->clear();
+
         $this->logger->info('Flushed models');
     }
 

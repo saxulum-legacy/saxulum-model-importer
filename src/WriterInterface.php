@@ -37,6 +37,8 @@ interface WriterInterface
 
     public function flush();
 
+    public function clear();
+
     /**
      * @param \DateTime $lastImportDate
      */

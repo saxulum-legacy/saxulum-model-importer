@@ -523,7 +523,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         /** @var ReaderInterface|\PHPUnit_Framework_MockObject_MockObject $reader */
         $reader = $this
             ->getMockBuilder(ReaderInterface::class)
-            ->setMethods(['getModels'])
+            ->setMethods(['getModels', 'clear'])
             ->getMockForAbstractClass();
 
         $reader
@@ -532,6 +532,10 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->willReturnCallback(function ($offset, $limit) use ($data) {
                 return array_slice($data, $offset, $limit);
             });
+
+        $reader
+            ->expects(self::any())
+            ->method('clear');
 
         return $reader;
     }
@@ -578,7 +582,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         /** @var WriterInterface|\PHPUnit_Framework_MockObject_MockObject $writer */
         $writer = $this
             ->getMockBuilder(WriterInterface::class)
-            ->setMethods(['find', 'create', 'update', 'persist', 'flush', 'removeAllOutdated'])
+            ->setMethods(['find', 'create', 'update', 'persist', 'flush', 'clear', 'removeAllOutdated'])
             ->getMockForAbstractClass();
 
         $persistCache = [];
@@ -644,6 +648,10 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
                 $persistCache = [];
             });
+
+        $writer
+            ->expects(self::any())
+            ->method('clear');
 
         $writer
             ->expects(self::any())

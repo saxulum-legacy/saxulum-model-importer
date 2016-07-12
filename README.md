@@ -56,6 +56,11 @@ class Reader implements ReaderInterface
 
         return $qb->getQuery()->getResult();
     }
+
+    public function clear()
+    {
+        $this->em->clear(ReaderEntity::class);
+    }
 }
 ```
 
@@ -174,7 +179,11 @@ class Writer implements WriterInterface
 
     public function flush()
     {
-        $this->em->flush();
+        $this->em->flush($writeModels);
+    }
+
+    public function clear()
+    {
         $this->em->clear(WriterEntity::class);
     }
 
