@@ -35,7 +35,10 @@ interface WriterInterface
      */
     public function persist(WriterModelInterface $writerModel);
 
-    public function flush();
+    /**
+     * @param WriterModelInterface[]|array $writeModels
+     */
+    public function flush(array $writeModels);
 
     public function clear();
 

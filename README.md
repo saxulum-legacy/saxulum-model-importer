@@ -177,7 +177,7 @@ class Writer implements WriterInterface
         $this->em->persist($writerModel);
     }
 
-    public function flush()
+    public function flush(array $writeModels)
     {
         $this->em->flush($writeModels);
     }

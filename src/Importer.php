@@ -66,9 +66,10 @@ class Importer
      */
     protected function importModels(array $readerModels, \DateTime $importDate)
     {
+        $writerModels = [];
         foreach ($readerModels as $readerModel) {
             try {
-                $this->importModel($readerModel, $importDate);
+                $writerModels[] = $this->importModel($readerModel, $importDate);
             } catch (NotImportableException $e) {
                 $this->logger->warning(
                     $e->getMessage(),
@@ -77,7 +78,7 @@ class Importer
             }
         }
 
-        $this->writer->flush();
+        $this->writer->flush($writerModels);
         $this->writer->clear();
 
         $this->logger->info('Flushed models');
@@ -86,6 +87,8 @@ class Importer
     /**
      * @param ReaderModelInterface $readerModel
      * @param \DateTime            $importDate
+     *
+     * @return WriterModelInterface
      */
     protected function importModel(ReaderModelInterface $readerModel, \DateTime $importDate)
     {
@@ -102,7 +105,10 @@ class Importer
         $writerModel->setLastImportDate($importDate);
 
         $this->writer->persist($writerModel);
+
         $this->modelInfo($readerModel, 'persisted');
+
+        return $writerModel;
     }
 
     /**

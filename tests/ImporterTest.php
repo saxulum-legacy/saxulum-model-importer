@@ -585,8 +585,6 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['find', 'create', 'update', 'persist', 'flush', 'clear', 'removeAllOutdated'])
             ->getMockForAbstractClass();
 
-        $persistCache = [];
-
         $writer
             ->expects(self::any())
             ->method('find')
@@ -632,21 +630,17 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
                 if (in_array($writerModel->getImportIdentifier(), $notPersistable, true)) {
                     throw new NotImportableException('persist');
                 }
-
-                $persistCache[] = $writerModel;
             });
 
         $writer
             ->expects(self::any())
             ->method('flush')
-            ->willReturnCallback(function () use (&$data, &$persistCache) {
-                foreach ($persistCache as $writerModel) {
+            ->willReturnCallback(function (array $writerModels) use (&$data) {
+                foreach ($writerModels as $writerModel) {
                     if (!in_array($writerModel, $data, true)) {
                         $data[] = $writerModel;
                     }
                 }
-
-                $persistCache = [];
             });
 
         $writer
