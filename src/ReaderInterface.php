@@ -10,7 +10,7 @@ interface ReaderInterface
      *
      * @return ReaderModelInterface[]|array
      */
-    public function getModels($offset, $limit);
+    public function getReaderModels($offset, $limit);
 
-    public function clear();
+    public function clearReaderModels();
 }

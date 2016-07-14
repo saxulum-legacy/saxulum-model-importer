@@ -4,6 +4,10 @@ namespace Saxulum\ModelImporter;
 
 class NotImportableException extends \Exception
 {
+    const ACTION_CREATE = 'create';
+    const ACTION_UPDATE = 'update';
+    const ACTION_PERSIST = 'persist';
+
     /**
      * @param string          $action
      * @param int             $code

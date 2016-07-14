@@ -48,7 +48,7 @@ class Reader implements ReaderInterface
     /**
      * @ReaderModelInterface[]|array
      */
-    public function getModels($offset, $limit)
+    public function getReaderModels($offset, $limit)
     {
         $qb = $this->em->getRepository(ReaderEntity::class)->createQueryBuilder('r');
         $qb->setFirstResult($offset);
@@ -57,7 +57,7 @@ class Reader implements ReaderInterface
         return $qb->getQuery()->getResult();
     }
 
-    public function clear()
+    public function clearReaderModels()
     {
         $this->em->clear(ReaderEntity::class);
     }
@@ -135,7 +135,7 @@ class Writer implements WriterInterface
      *
      * @return WriterModelInterface|null
      */
-    public function find(ReaderModelInterface $readerModel)
+    public function findWriterModel(ReaderModelInterface $readerModel)
     {
         return $this->em->getRepository(WriterEntity::class)
             ->findOneBy(['importIdentifier' => $readerModel->getImportIdentifier()]);
@@ -148,7 +148,7 @@ class Writer implements WriterInterface
      *
      * @throws NotImportableException
      */
-    public function create(ReaderModelInterface $readerModel)
+    public function createWriterModel(ReaderModelInterface $readerModel)
     {
         $writerModel = new WriterEntity();
         $writerModel->setName($readerModel->getName());
@@ -162,7 +162,7 @@ class Writer implements WriterInterface
      *
      * @throws NotImportableException
      */
-    public function update(WriterModelInterface $writerModel, ReaderModelInterface $readerModel)
+    public function updateWriterModel(WriterModelInterface $writerModel, ReaderModelInterface $readerModel)
     {
         $writerModel->setName($readerModel->getName());
     }
@@ -172,17 +172,17 @@ class Writer implements WriterInterface
      *
      * @throws NotImportableException
      */
-    public function persist(WriterModelInterface $writerModel)
+    public function persistWriterModel(WriterModelInterface $writerModel)
     {
         $this->em->persist($writerModel);
     }
 
-    public function flush(array $writeModels)
+    public function flushWriterModels(array $writeModels)
     {
         $this->em->flush($writeModels);
     }
 
-    public function clear()
+    public function clearWriterModels()
     {
         $this->em->clear(WriterEntity::class);
     }
@@ -190,7 +190,7 @@ class Writer implements WriterInterface
     /**
      * @param \DateTime $lastImportDate
      */
-    public function removeAllOutdated(\DateTime $lastImportDate)
+    public function removeWriterModels(\DateTime $lastImportDate)
     {
         $qb = $this->em->createQueryBuilder();
         $qb->delete(WriterEntity::class, 'w');

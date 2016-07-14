@@ -9,7 +9,7 @@ interface WriterInterface
      *
      * @return WriterModelInterface|null
      */
-    public function find(ReaderModelInterface $readerModel);
+    public function findWriterModel(ReaderModelInterface $readerModel);
 
     /**
      * @param ReaderModelInterface $readerModel
@@ -18,7 +18,7 @@ interface WriterInterface
      *
      * @throws NotImportableException
      */
-    public function create(ReaderModelInterface $readerModel);
+    public function createWriterModel(ReaderModelInterface $readerModel);
 
     /**
      * @param WriterModelInterface $writerModel
@@ -26,24 +26,24 @@ interface WriterInterface
      *
      * @throws NotImportableException
      */
-    public function update(WriterModelInterface $writerModel, ReaderModelInterface $readerModel);
+    public function updateWriterModel(WriterModelInterface $writerModel, ReaderModelInterface $readerModel);
 
     /**
      * @param WriterModelInterface $writerModel
      *
      * @throws NotImportableException
      */
-    public function persist(WriterModelInterface $writerModel);
+    public function persistWriterModel(WriterModelInterface $writerModel);
 
     /**
      * @param WriterModelInterface[]|array $writeModels
      */
-    public function flush(array $writeModels);
+    public function flushWriterModels(array $writeModels);
 
-    public function clear();
+    public function clearWriterModels();
 
     /**
      * @param \DateTime $lastImportDate
      */
-    public function removeAllOutdated(\DateTime $lastImportDate);
+    public function removeWriterModels(\DateTime $lastImportDate);
 }

@@ -47,14 +47,14 @@ class Importer
 
         $offset = 0;
 
-        while ([] !== $readerModels = $this->reader->getModels($offset, $limit)) {
+        while ([] !== $readerModels = $this->reader->getReaderModels($offset, $limit)) {
             $this->logger->info('Read, offset: {offset}, limit: {limit}', ['offset' => $offset, 'limit' => $limit]);
             $this->importModels($readerModels, $importDate);
-            $this->reader->clear();
+            $this->reader->clearReaderModels();
             $offset += $limit;
         }
 
-        $this->writer->removeAllOutdated($importDate);
+        $this->writer->removeWriterModels($importDate);
         $this->logger->info('Removed all outdates');
 
         return $importDate;
@@ -78,8 +78,8 @@ class Importer
             }
         }
 
-        $this->writer->flush($writerModels);
-        $this->writer->clear();
+        $this->writer->flushWriterModels($writerModels);
+        $this->writer->clearWriterModels();
 
         $this->logger->info('Flushed models');
     }
@@ -92,19 +92,19 @@ class Importer
      */
     protected function importModel(ReaderModelInterface $readerModel, \DateTime $importDate)
     {
-        $writerModel = $this->writer->find($readerModel);
+        $writerModel = $this->writer->findWriterModel($readerModel);
         if (null === $writerModel) {
-            $writerModel = $this->writer->create($readerModel);
+            $writerModel = $this->writer->createWriterModel($readerModel);
             $this->modelInfo($readerModel, 'created');
         } else {
-            $this->writer->update($writerModel, $readerModel);
+            $this->writer->updateWriterModel($writerModel, $readerModel);
             $this->modelInfo($readerModel, 'updated');
         }
 
         $writerModel->setImportIdentifier($readerModel->getImportIdentifier());
         $writerModel->setLastImportDate($importDate);
 
-        $this->writer->persist($writerModel);
+        $this->writer->persistWriterModel($writerModel);
 
         $this->modelInfo($readerModel, 'persisted');
 

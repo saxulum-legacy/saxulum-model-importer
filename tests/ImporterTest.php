@@ -523,19 +523,19 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         /** @var ReaderInterface|\PHPUnit_Framework_MockObject_MockObject $reader */
         $reader = $this
             ->getMockBuilder(ReaderInterface::class)
-            ->setMethods(['getModels', 'clear'])
+            ->setMethods(['getReaderModels', 'clearReaderModels'])
             ->getMockForAbstractClass();
 
         $reader
             ->expects(self::any())
-            ->method('getModels')
+            ->method('getReaderModels')
             ->willReturnCallback(function ($offset, $limit) use ($data) {
                 return array_slice($data, $offset, $limit);
             });
 
         $reader
             ->expects(self::any())
-            ->method('clear');
+            ->method('clearReaderModels');
 
         return $reader;
     }
@@ -582,12 +582,20 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
         /** @var WriterInterface|\PHPUnit_Framework_MockObject_MockObject $writer */
         $writer = $this
             ->getMockBuilder(WriterInterface::class)
-            ->setMethods(['find', 'create', 'update', 'persist', 'flush', 'clear', 'removeAllOutdated'])
+            ->setMethods([
+                'findWriterModel',
+                'createWriterModel',
+                'updateWriterModel',
+                'persistWriterModel',
+                'flushWriterModels',
+                'clearWriterModels',
+                'removeWriterModels',
+            ])
             ->getMockForAbstractClass();
 
         $writer
             ->expects(self::any())
-            ->method('find')
+            ->method('findWriterModel')
             ->willReturnCallback(function (ReaderModelInterface $readerModel) use ($data) {
                 foreach ($data as $writerModel) {
                     if ($writerModel->getImportIdentifier() === $readerModel->getImportIdentifier()) {
@@ -598,10 +606,10 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
         $writer
             ->expects(self::any())
-            ->method('create')
+            ->method('createWriterModel')
             ->willReturnCallback(function (ReaderModelInterface $readerModel) use ($notCreatable) {
                 if (in_array($readerModel->getImportIdentifier(), $notCreatable, true)) {
-                    throw new NotImportableException('create');
+                    throw new NotImportableException(NotImportableException::ACTION_CREATE);
                 }
 
                 $writerModel = $this->getWriterModel();
@@ -612,11 +620,11 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
         $writer
             ->expects(self::any())
-            ->method('update')
+            ->method('updateWriterModel')
             ->willReturnCallback(
                 function (WriterModelInterface $writerModel, ReaderModelInterface $readerModel) use ($notUpdateable) {
                     if (in_array($readerModel->getImportIdentifier(), $notUpdateable, true)) {
-                        throw new NotImportableException('update');
+                        throw new NotImportableException(NotImportableException::ACTION_UPDATE);
                     }
 
                     return $writerModel;
@@ -625,16 +633,16 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
         $writer
             ->expects(self::any())
-            ->method('persist')
+            ->method('persistWriterModel')
             ->willReturnCallback(function (WriterModelInterface $writerModel) use (&$persistCache, $notPersistable) {
                 if (in_array($writerModel->getImportIdentifier(), $notPersistable, true)) {
-                    throw new NotImportableException('persist');
+                    throw new NotImportableException(NotImportableException::ACTION_PERSIST);
                 }
             });
 
         $writer
             ->expects(self::any())
-            ->method('flush')
+            ->method('flushWriterModels')
             ->willReturnCallback(function (array $writerModels) use (&$data) {
                 foreach ($writerModels as $writerModel) {
                     if (!in_array($writerModel, $data, true)) {
@@ -645,11 +653,11 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
         $writer
             ->expects(self::any())
-            ->method('clear');
+            ->method('clearWriterModels');
 
         $writer
             ->expects(self::any())
-            ->method('removeAllOutdated')
+            ->method('removeWriterModels')
             ->willReturnCallback(function (\DateTime $lastImportDate) use (&$data) {
                 foreach ($data as $i => $writerModel) {
                     if ($writerModel->getLastImportDate()->format('YmdHis') !== $lastImportDate->format('YmdHis')) {
