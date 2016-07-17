@@ -5,11 +5,15 @@ namespace Saxulum\Tests\ModelImporter;
 use Psr\Log\AbstractLogger;
 use Saxulum\ModelImporter\Importer;
 use Saxulum\ModelImporter\NotImportableException;
+use Saxulum\ModelImporter\Progress\ProgressInterface;
 use Saxulum\ModelImporter\ReaderInterface;
 use Saxulum\ModelImporter\ReaderModelInterface;
 use Saxulum\ModelImporter\WriterInterface;
 use Saxulum\ModelImporter\WriterModelInterface;
 
+/**
+ * @covers Saxulum\ModelImporter\Importer
+ */
 class ImporterTest extends \PHPUnit_Framework_TestCase
 {
     public function testWithoutData()
@@ -64,7 +68,9 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
         $importer = new Importer($reader, $writer, $logger);
 
-        $importDate = $importer->import(2);
+        $progress = $this->getProgress();
+
+        $importDate = $importer->import(2, $progress);
 
         self::assertInstanceOf(\DateTime::class, $importDate);
 
@@ -213,6 +219,8 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ],
             $logger->getLogs()
         );
+
+        self::assertSame(5, $progress->advance);
     }
 
     public function testWithDataOnBothSide()
@@ -238,7 +246,9 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
         $importer = new Importer($reader, $writer, $logger);
 
-        $importDate = $importer->import(2);
+        $progress = $this->getProgress();
+
+        $importDate = $importer->import(2, $progress);
 
         self::assertInstanceOf(\DateTime::class, $importDate);
 
@@ -357,6 +367,8 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ],
             $logger->getLogs()
         );
+
+        self::assertSame(4, $progress->advance);
     }
 
     public function testWithNotImportableDataOnReaderSide()
@@ -381,7 +393,9 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
 
         $importer = new Importer($reader, $writer, $logger);
 
-        $importDate = $importer->import(2);
+        $progress = $this->getProgress();
+
+        $importDate = $importer->import(2, $progress);
 
         self::assertInstanceOf(\DateTime::class, $importDate);
 
@@ -511,6 +525,8 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             ],
             $logger->getLogs()
         );
+
+        self::assertSame(5, $progress->advance);
     }
 
     /**
@@ -716,6 +732,29 @@ class ImporterTest extends \PHPUnit_Framework_TestCase
             });
 
         return $writerModel;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|ProgressInterface|\stdClass
+     */
+    protected function getProgress()
+    {
+        /** @var ProgressInterface|\PHPUnit_Framework_MockObject_MockObject|\stdClass $progress */
+        $progress = $this
+            ->getMockBuilder(ProgressInterface::class)
+            ->setMethods(['advance'])
+            ->getMockForAbstractClass();
+
+        $progress->advance = 0;
+
+        $progress
+            ->expects(self::any())
+            ->method('advance')
+            ->willReturnCallback(function () use ($progress) {
+                ++$progress->advance;
+            });
+
+        return $progress;
     }
 }
 

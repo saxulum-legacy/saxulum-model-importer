@@ -4,6 +4,8 @@ namespace Saxulum\ModelImporter;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Saxulum\ModelImporter\Progress\NullProgress;
+use Saxulum\ModelImporter\Progress\ProgressInterface;
 
 class Importer
 {
@@ -35,12 +37,17 @@ class Importer
     }
 
     /**
-     * @param int $limit
+     * @param int                    $limit
+     * @param ProgressInterface|null $progress
      *
      * @return \DateTime
      */
-    public function import($limit = 100)
+    public function import($limit = 100, ProgressInterface $progress = null)
     {
+        if (null === $progress) {
+            $progress = new NullProgress();
+        }
+
         $importDate = new \DateTime();
 
         $this->logger->info('Import started at {importDate}', ['importDate' => $importDate]);
@@ -49,7 +56,7 @@ class Importer
 
         while ([] !== $readerModels = $this->reader->getReaderModels($offset, $limit)) {
             $this->logger->info('Read, offset: {offset}, limit: {limit}', ['offset' => $offset, 'limit' => $limit]);
-            $this->importModels($readerModels, $importDate);
+            $this->importModels($readerModels, $importDate, $progress);
             $this->reader->clearReaderModels();
             $offset += $limit;
         }
@@ -63,8 +70,9 @@ class Importer
     /**
      * @param ReaderModelInterface[]|array $readerModels
      * @param \DateTime                    $importDate
+     * @param ProgressInterface            $progress
      */
-    protected function importModels(array $readerModels, \DateTime $importDate)
+    protected function importModels(array $readerModels, \DateTime $importDate, ProgressInterface $progress)
     {
         $writerModels = [];
         foreach ($readerModels as $readerModel) {
@@ -76,6 +84,7 @@ class Importer
                     ['identifier' => $readerModel->getImportIdentifier()]
                 );
             }
+            $progress->advance();
         }
 
         $this->writer->flushWriterModels($writerModels);
