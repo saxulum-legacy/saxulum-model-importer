@@ -44,16 +44,13 @@ class Importer
      */
     public function import($limit = 100, ProgressInterface $progress = null)
     {
-        if (null === $progress) {
-            $progress = new NullProgress();
-        }
-
         $importDate = new \DateTime();
 
         $this->logger->info('Import started at {importDate}', ['importDate' => $importDate]);
 
-        $offset = 0;
+        $progress = $this->getProgress($progress);
 
+        $offset = 0;
         while ([] !== $readerModels = $this->reader->getReaderModels($offset, $limit)) {
             $this->logger->info('Read, offset: {offset}, limit: {limit}', ['offset' => $offset, 'limit' => $limit]);
             $this->importModels($readerModels, $importDate, $progress);
@@ -65,6 +62,20 @@ class Importer
         $this->logger->info('Removed all outdates');
 
         return $importDate;
+    }
+
+    /**
+     * @param ProgressInterface|null $progress
+     *
+     * @return ProgressInterface
+     */
+    protected function getProgress(ProgressInterface $progress = null)
+    {
+        if (null === $progress) {
+            $progress = new NullProgress();
+        }
+
+        return $progress;
     }
 
     /**
