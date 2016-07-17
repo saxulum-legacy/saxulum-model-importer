@@ -4,6 +4,9 @@ namespace Saxulum\Tests\ModelImporter;
 
 use Saxulum\ModelImporter\NotImportableException;
 
+/**
+ * @covers Saxulum\ModelImporter\NotImportableException
+ */
 class NotImportableExceptionTest extends \PHPUnit_Framework_TestCase
 {
     public function testMessage()
